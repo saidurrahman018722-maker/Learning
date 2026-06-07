@@ -133,6 +133,24 @@ export const RegisterController = async (req,res)=>{
     } 
 
 
+    export const profile = async (req,res)=>{
+        try {
+            
+            return res.status(200).json({
+                data:{
+                    id:req.user.id,
+                    name:req.user.name,
+                    email:req.user.email
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                message:error.message
+            })
+        }
+    }   
+
+
     
 
 

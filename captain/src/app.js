@@ -20,6 +20,6 @@ app.use('/auth',authRoutes);
 
 
 
-app.listen(5001,()=>{
-    console.log("the sever is running on the port 5001")
+app.listen(5002,()=>{
+    console.log("the sever is running on the port 5002")
 })

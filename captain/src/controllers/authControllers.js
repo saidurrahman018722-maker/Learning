@@ -12,21 +12,21 @@ export const RegisterController = async (req,res)=>{
 
     const {name,email,password} =req.body;
 
-    const userExits = await prisma.user.findUnique({
+    const captainExits = await prisma.captain.findUnique({
         where:{
             email:email
         }
     });
-    if(userExits){
+    if(captainExits){
         return res.status(400).json({
-            message: "the user already exits."
+            message: "the Captain already exits."
         })
     }
 
     const salt = await bcrypth.genSalt(10);
     const hashedPassword = await bcrypth.hash(password,salt);
 
-    const user = await prisma.user.create({
+    const captain = await prisma.captain.create({
         data:{
 
             name,
@@ -35,13 +35,13 @@ export const RegisterController = async (req,res)=>{
         
         }
     })
-    const token = generateToken(user.id,res);
+    const token = generateToken(captain.id,res);
 
     return res.status(200).json({
-        message:"user created successfully",
+        message:"captain created successfully",
         data:{
-            id:user.id,
-            user
+            id:captain.id,
+            captain
         },
         token
 
@@ -51,17 +51,17 @@ export const RegisterController = async (req,res)=>{
     export const login = async (req,res)=>{
         const {email,password} = req.body;
 
-        const userExits =  await prisma.user.findUnique({
+        const captainExits =  await prisma.captain.findUnique({
             where:{
                 email:email,
             }
         })
-        if(!userExits){
+        if(!captainExits){
             return res.status(400).json({
                 message:"Invalid email or password"
             })
         }
-        const verifypassword = await bcrypth.compare(password,userExits.password);
+        const verifypassword = await bcrypth.compare(password,captainExits.password);
 
         if(!verifypassword){
             return res.status(400).json({
@@ -69,14 +69,14 @@ export const RegisterController = async (req,res)=>{
             })
 
         }
-        const token = generateToken(userExits.id,res);
+        const token = generateToken(captainExits.id,res);
 
         return res.status(200).json({
             status : "sucess",
             data:{
-                id:userExits.id,
-                name:userExits.name,
-                email:userExits.email,
+                id:captainExits.id,
+                name:captainExits.name,
+                email:captainExits.email,
                 
             },
             token
@@ -99,7 +99,7 @@ export const RegisterController = async (req,res)=>{
 
         if(!token){
             return res.status(200).json({
-                message:"the user is already logged out"
+                message:"the Captain is already logged out"
             })
         }
 
@@ -120,7 +120,7 @@ export const RegisterController = async (req,res)=>{
         })
 
         return res.status(200).json({
-            message:"user logged out successfully"
+            message:"Captain logged out successfully"
         })
             
 
@@ -131,6 +131,25 @@ export const RegisterController = async (req,res)=>{
         })
     }
     } 
+
+
+        export const profile = async (req,res)=>{
+        try {
+            
+            return res.status(200).json({
+                data:{
+                    id:req.captain.id,
+                    name:req.captain.name,
+                    email:req.captain.email
+                }
+            })
+        } catch (error) {
+            return res.status(400).json({
+                message:"no profile"
+            })
+        }
+    }   
+
 
 
     

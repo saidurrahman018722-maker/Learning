@@ -9,8 +9,8 @@ export const  registerSchema =zod.object({
 })
 
 export const loginSchema = zod.object({
-    email:zod.string().email("this must be a valid email"),
-    password : zod.coerce.number().min(6,"the password must be a atlest 6 digits.")
+    email:zod.string().trim().email("this must be a valid email"),
+    password : zod.string().min(6,"the password must be a atlest 6 digits.")
 
 })
 

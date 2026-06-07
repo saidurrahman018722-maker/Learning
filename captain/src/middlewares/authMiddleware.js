@@ -27,26 +27,26 @@ export const authMiddleware = async (req,res,next)=>{
         })
     }
     try {
-        const user = jwt.verify(token,process.env.JWT_SECRET);
+        const captain = jwt.verify(token,process.env.JWT_SECRET);
 
-        if(!user){
+        if(!captain){
             return res.status(401).json({
                 message:"Unauthorized token."
             })
         }
         
-        const userExits =  await prisma.user.findUnique({
+        const captainExits =  await prisma.captain.findUnique({
             where:{
-                id:user.id
+                id:captain.id
             }
         })
-        if(!userExits){
+        if(!captainExits){
             return res.status(404).json({
                 message:"user not found"
             })
         }
 
-        req.user = userExits;
+        req.captain = captainExits;
         next();
     } catch (error) {
         return res.status(401).json({

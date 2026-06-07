@@ -26,7 +26,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/pg": "^8.20.0",
     "nodemon": "^3.1.14",
-    "prisma": "^6.19.3"
+    "prisma": "^7.8.0"
   }
 }
