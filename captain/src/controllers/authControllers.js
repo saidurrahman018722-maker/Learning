@@ -4,6 +4,12 @@ import { generateToken } from "../utils/tokenganarate.js"
 import express from "express"
 import { blackListTokenSchema } from "../validators/authValidator.js";
 import { validateRequest } from "../middlewares/requestValidator.js";
+import { consumeToQueue } from "../services/rabbitmq.js"
+import { EventEmitter } from 'events';
+
+// Create the global event bus for your rides
+export const rideEventEmitter = new EventEmitter();
+// ... your other imports
 
 
 const one = express.Router();
@@ -148,7 +154,40 @@ export const RegisterController = async (req,res)=>{
                 message:"no profile"
             })
         }
-    }   
+    } 
+
+        export const waitForNewRides = async (req, res) => {
+            // 1. Set a 30-second timeout. If no ride comes in, close the connection cleanly.
+            const timeout = setTimeout(() => {
+                // Stop listening to prevent memory leaks
+                rideEventEmitter.removeAllListeners('new-ride-available'); 
+                
+                // 204 No Content tells the frontend "Nothing yet, try asking again"
+                return res.status(204).end(); 
+            }, 30000);
+
+            // 2. Pause the request here. Wait for RabbitMQ to trigger this exact event.
+            rideEventEmitter.once('new-ride-available', (newRideData) => {
+                
+                // We got a ride! Cancel the timeout so it doesn't fire later.
+                clearTimeout(timeout);
+                
+                // Send the ride data to the Captain's app instantly
+                return res.status(200).json({
+                    success: true,
+                    message: "A new ride is available!",
+                    ride: newRideData 
+                });
+            });
+            };
+
+    
+         export const rabbitMQinit = ()=>{
+            consumeToQueue('create-ride',(data)=>{
+            console.log(data);
+            rideEventEmitter.emit('new-ride-available', data);
+    })
+         }
 
 
 

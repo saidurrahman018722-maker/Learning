@@ -4,10 +4,12 @@ import { config } from "dotenv"
 import { connectDB } from "./config/bd.js";
 import authRoutes from "./routes/authRoutes.js"
 import {clearExpiredTokens} from "../src/utils/clearToken.js"
+import { connectRabbitMQ } from "./services/rabbitmq.js";
 
 
 config();
 connectDB();
+connectRabbitMQ();
 clearExpiredTokens();
 
 const app = express()
