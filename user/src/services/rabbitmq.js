@@ -30,7 +30,7 @@ export const connectRabbitMQ = async () => {
 export const publishToQueue = async (queueName, data) => {
   if (!channel) {
     throw new Error('RabbitMQ channel is not initialized. Call connectRabbitMQ() first.');
-  } connectRabbitMQ();
+  }
 
   try {
     // Ensure the queue exists before sending to it (durable: true survives server restarts)
@@ -55,7 +55,7 @@ export const consumeToQueue = async (queueName, callback) => {
   if (!channel) {
     throw new Error('RabbitMQ channel is not initialized. Call connectRabbitMQ() first.');
   }
-  connectRabbitMQ();
+
   try {
     // Ensure the queue exists before trying to consume from it
     await channel.assertQueue(queueName, { durable: true });

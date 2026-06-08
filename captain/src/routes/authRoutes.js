@@ -16,6 +16,8 @@ router.post('/register',validateRequest(registerSchema),RegisterController);
  router.get('/profile',authMiddleware,profile);
  router.get('/waitForNewRides',authMiddleware,waitForNewRides);
 
+ 
+
 
 
 

@@ -1,7 +1,7 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import { config } from "dotenv"
-import { connectDB } from "./src/config/bd.js";
+import { connectDB } from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js"
 import {clearExpiredTokens} from "./src/utils/clearToken.js"
 import { connectRabbitMQ } from "./src/services/rabbitmq.js";

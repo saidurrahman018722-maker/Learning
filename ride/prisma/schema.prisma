@@ -17,7 +17,17 @@ model Ride{
   userId String 
   destination String
   pickup String
+  status Status @default(REQUESTED)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  REQUESTED
+  ACCPETED
+  PENDING
+  COMPLETED
+  CANCELLED
+
 }

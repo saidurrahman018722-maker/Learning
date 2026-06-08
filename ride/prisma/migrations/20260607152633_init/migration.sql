@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "Status" AS ENUM ('REQUESTED', 'ACCPETED', 'PENDING', 'COMPLETED', 'CANCELLED');
+
+-- AlterTable
+ALTER TABLE "Ride" ADD COLUMN     "status" "Status" NOT NULL DEFAULT 'REQUESTED';

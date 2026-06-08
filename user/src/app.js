@@ -5,11 +5,13 @@ import { connectDB } from "./config/bd.js";
 import authRoutes from "./routes/authRoutes.js"
 import {clearExpiredTokens} from "../src/utils/clearToken.js"
 import { connectRabbitMQ } from "./services/rabbitmq.js";
+import { rabbitMQinit } from "./controllers/rideAcceptedController.js";
 
 
 config();
 connectDB();
-connectRabbitMQ();
+ await connectRabbitMQ();
+ rabbitMQinit()
 clearExpiredTokens();
 
 const app = express()
